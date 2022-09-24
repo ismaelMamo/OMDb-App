@@ -9,9 +9,14 @@ interface Movie {
 const Card: React.FC<Movie> = ({ title, year, displayPosterSrc }) => {
 	return (
 		<div className='cardContainer'>
-			<img className='CardPosterContainer' src={displayPosterSrc} alt={title} />
-			<div className='posterContainer'>{`${title} (${year})`}</div>
-			<div className='cardBtn'></div>
+			<div className='upperCardContainer'>
+				<img className='cardPoster' src={displayPosterSrc} alt={title} />
+				<div className='cardInfoContainer'>
+					<div className='cardInfoTitle'>{title} </div>
+					<div className='cardInfoYear'>{`(${year})`}</div>
+				</div>
+			</div>
+			<input className='cardBtn' type='submit' value=''></input>
 		</div>
 	);
 };

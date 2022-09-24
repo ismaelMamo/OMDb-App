@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Card from "../components/Card";
+import "../style/main.css";
 
 interface Movie {
 	title: string;
@@ -9,19 +10,23 @@ interface Movie {
 function Main() {
 	const [MovieSet, setMovieSet] = useState<Movie[]>([]);
 	const [UserInput, setUserInput] = useState("");
+	const apiKey = "749e16c9";
+	const url = "https://www.omdbapi.com/";
 
 	const InputObserver = useCallback(async () => {
 		let temp: Movie[] = [];
-		const queryUrl = `https://www.omdbapi.com/?s=war-of&apikey=749e16c9`;
+		const queryUrl = `${url}?s=${UserInput}&apikey=${apiKey}`;
 		await fetch(queryUrl)
 			.then((res) => res.json())
 			.then((data) => {
-				for (let element of data.Search) {
-					temp.push({
-						title: element.Title,
-						year: element.Year,
-						displayPosterSrc: element.Poster,
-					});
+				if (data.Response !== "False") {
+					for (let element of data.Search) {
+						temp.push({
+							title: element.Title,
+							year: element.Year,
+							displayPosterSrc: element.Poster,
+						});
+					}
 				}
 			})
 			.then(() => setMovieSet(temp));
@@ -31,7 +36,7 @@ function Main() {
 		InputObserver();
 	}, [InputObserver]);
 	return (
-		<>
+		<div id='appBody'>
 			<input
 				onChange={(element) => {
 					setUserInput(element.target.value.trim());
@@ -40,7 +45,7 @@ function Main() {
 				type='search'
 				id='SearchField'
 			/>
-			<div>
+			<div id='cardsContainer'>
 				{MovieSet?.map((element: Movie, index: number) => {
 					return (
 						<Card
@@ -52,7 +57,7 @@ function Main() {
 					);
 				})}
 			</div>
-		</>
+		</div>
 	);
 }
 
